@@ -1,4 +1,4 @@
-module(addr, out);
+module rom(addr, out);
     input wire [3:0] addr;
     output reg [7:0] out;
 
