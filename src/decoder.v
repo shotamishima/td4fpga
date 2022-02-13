@@ -27,11 +27,11 @@ module decoder(op, carry_flag, sel, load);
         4'b1011: load = 4'b1011; // OUT Im
         4'b1001: load = 4'b1011; // OUT B
         4'b1111: load = 4'b0111; // JMP Im
-        4'b1110: if(carry_flag == 0) begin // JNC Im
-                    load = 4'b0111;
-                 end 
-                     load = 4'b1111;
+        4'b1110: if(carry_flag == 0) begin
+                     load = 4'b0111;
+                 end
                  else begin
+                     load = 4'b1111;
                  end
         endcase
     end
