@@ -1,8 +1,8 @@
 module cpu(clk, rst, inp, outp);
 
-    input wire clk, rst;
-    input wire [3:0] inp;
-    output reg [3:0] outp;
+    input clk, rst;
+    input [3:0] inp;
+    output [3:0] outp;
 
     /* fetch */
     wire [3:0] addr;
@@ -11,6 +11,7 @@ module cpu(clk, rst, inp, outp);
 
     /* decode */
     reg cflag;
+    wire cflag_r; // for assign in alu module
     wire [1:0] sel;
     wire [3:0] ld;
     
@@ -27,8 +28,8 @@ module cpu(clk, rst, inp, outp);
         .clk(clk),
         .rst(rst),
         .load(ld[3]),
-        .dat_in(alu_out),
-        .dat_out(addr)
+        .data_in(alu_out),
+        .q(addr)
     );
 
     rom rom(.addr(addr), .out(op));
@@ -77,14 +78,14 @@ module cpu(clk, rst, inp, outp);
         .dat_in(a),
         .imdata(im),
         .dat_out(alu_out),
-        .carry_flag(cflag)
+        .carry_flag(cflag_r)
     );
 
-    always @(posedge clk or reset) begin
+    always @(posedge clk or rst) begin
         if (rst) begin
             cflag = 1'b0;
         end else begin
-            cflag = cflag;
+            cflag = cflag_r;
         end
     end
 endmodule
