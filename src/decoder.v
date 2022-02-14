@@ -1,5 +1,5 @@
 module decoder(op, carry_flag, sel, load);
-    input wire [7:0] op;
+    input wire [3:0] op;
     input wire carry_flag;
     // sel: select input channl to ALU
     // 00: Ch0(register a), 10: Ch1(register b), 01: Ch2(input port), 11: Ch3(4'b0000)
@@ -8,14 +8,9 @@ module decoder(op, carry_flag, sel, load);
     // {pc, output port, register b, register a}
     output reg [3:0] load;
 
-    wire [3:0] opcode, im;
-
-    // separate opcode and imidiate data
-    assign {opcode, im} = op;
-
     // process for data selector
-    always @(opcode) begin 
-        case (opcode)
+    always @(op) begin 
+        case (op)
         4'b0011: load = 4'b1110; // MOV A. Im
         4'b0111: load = 4'b1101; // MOV B, Im
         4'b0001: load = 4'b1110; // MOV A, B
@@ -36,8 +31,8 @@ module decoder(op, carry_flag, sel, load);
         endcase
     end
 
-    always @(opcode) begin
-        case (opcode)
+    always @(op) begin
+        case (op)
         4'b0011: sel = 2'b11; // MOV A. Im
         4'b0111: sel = 2'b11; // MOV B, Im
         4'b0001: sel = 2'b10; // MOV A, B
